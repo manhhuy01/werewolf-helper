@@ -4,7 +4,7 @@ import InitPlayer from './initPlayer';
 import InitRole from './initRole';
 import Error from './error';
 import React from 'react';
-import { SCENE } from '../game/scenes';
+import { SCENE } from '../game/dto';
 
 const components = {
   [SCENE.InitPlayer]: InitPlayer,

@@ -1,4 +1,4 @@
-import { SCENE } from ".";
+import { SCENE } from "../dto";
 import { GameState } from "../reducer";
 
 
