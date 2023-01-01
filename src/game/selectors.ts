@@ -11,3 +11,13 @@ export const selectCurrentScene = createSelector(
     return undefined;
   }
 )
+
+export const selectTotalPlayer = createSelector(
+  (state: RootState) => state.game,
+  (game) => game.players.length
+)
+
+export const selectPlayerWithoutRole = createSelector(
+  (state: RootState) => state.game,
+  (game) => game.players.filter(player => !player.role)
+)

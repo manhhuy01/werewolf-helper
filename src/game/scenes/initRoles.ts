@@ -1,10 +1,10 @@
-import { SCENE } from "../dto";
-import { GameState } from "../reducer";
+import { SCENE } from "../types";
+import { GameState } from "../types";
 
 
 export default {
   startCondition: (game: GameState) => {
-    return game.roles.length === 0;
+    return game.groupCharacters.length === 0;
   },
   finishCondition: (game: GameState) => {
     return true;

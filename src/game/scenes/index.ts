@@ -1,8 +1,10 @@
 import initPlayer from "./initPlayer";
 import initRoles from "./initRoles";
+import initWolf from "./initWolf";
 
 export default [
   initPlayer,
-  initRoles
+  initRoles,
+  initWolf,
 ]
 

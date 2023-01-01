@@ -1,11 +1,12 @@
+import { CHARACTER_TYPE } from "../characters/type";
 import { GameState, SCENE } from "../types";
 
 export default {
   startCondition: (game: GameState) => {
-    return game.players.length === 0;
+    return !game.players.find(player => player.role?.name === CHARACTER_TYPE.WOLF);
   },
   finishCondition: (game: GameState) => {
     return true;
   },
-  renderComponent: SCENE.InitPlayer,
+  renderComponent: SCENE.InitWolf,
 }
