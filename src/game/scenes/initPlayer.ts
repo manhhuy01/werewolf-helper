@@ -1,6 +1,5 @@
 import { GameState, SCENE } from "../types";
-
-export default {
+const Scene = {
   startCondition: (game: GameState) => {
     return game.players.length === 0;
   },
@@ -9,3 +8,4 @@ export default {
   },
   renderComponent: SCENE.InitPlayer,
 }
+export default Scene;

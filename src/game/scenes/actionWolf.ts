@@ -1,12 +1,14 @@
 import { CHARACTER_TYPE } from "../characters/type";
 import { GameState, SCENE } from "../types";
 
-export default {
+const Scence = {
   startCondition: (game: GameState) => {
-    return game.players.filter(p=> p.role?.name === CHARACTER_TYPE.WOLF).length === game.groupCharacters.find(g=> g.character.name === CHARACTER_TYPE.WOLF)?.number;
+    return !game.actions.find(action => action.source === CHARACTER_TYPE.WOLF);
   },
   finishCondition: (game: GameState) => {
     return true;
   },
-  renderComponent: SCENE.InitPlayer,
+  renderComponent: SCENE.ActionWolf,
 }
+
+export default Scence;

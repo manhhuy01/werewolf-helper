@@ -21,7 +21,7 @@ const PlayerCard = ({ name, deletePlayer }: PlayerProps) => {
   )
 }
 
-export default () => {
+const Component = () => {
   const dispatch = useDispatch()
   const [players, setPlayers] = useState<Player[]>(JSON.parse(localStorage.getItem('players') || "[]"))
   const submit = () => {
@@ -30,7 +30,10 @@ export default () => {
   const inputEl = useRef<HTMLInputElement>(null);
   const onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      setPlayers([...players, { name: (e.target as HTMLInputElement).value}]);
+      setPlayers([...players, { 
+        name: (e.target as HTMLInputElement).value,
+        isAlive: true,
+      }]);
       (e.target as HTMLInputElement).value = ""
     }
   }
@@ -46,3 +49,5 @@ export default () => {
     </div>
   )
 }
+
+export default Component;

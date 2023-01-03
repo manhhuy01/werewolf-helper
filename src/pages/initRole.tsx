@@ -29,18 +29,18 @@ const Role = ({ groupCharacter, decreaseRole, increaseRole }: RoleProps) => {
   )
 }
 
-export default () => {
+const Component = () => {
   const savedGroupCharacters = JSON.parse(localStorage.getItem('groupCharacters') || "[]")
   const [groupCharacters, setGroupCharacters] = useState<GroupCharacter[]>(Characters.map(character => ({
     character,
     number: (savedGroupCharacters.find((s: GroupCharacter) => s.character.name === character.name)?.number || 0)
   })))
   const dispatch = useDispatch()
-  const [numberPlayer, setNumberPlayer] = useState<number>(useSelector(selectTotalPlayer) - savedGroupCharacters.reduce((agg:number, item:GroupCharacter)=> agg+= item.number, 0))
+  const [numberPlayer, setNumberPlayer] = useState<number>(useSelector(selectTotalPlayer) - savedGroupCharacters.reduce((agg: number, item: GroupCharacter) => agg += item.number, 0))
 
   const submit = () => {
     if (numberPlayer === 0) {
-      dispatch(addGroupCharacters(groupCharacters));
+      dispatch(addGroupCharacters(groupCharacters.filter(g => g.number).map(groupCharacter => ({ ...groupCharacter, character: { name: groupCharacter.character.name } }))));
     }
   }
   const decreaseRole = (groupCharacter: GroupCharacter) => {
@@ -70,3 +70,5 @@ export default () => {
     </div>
   )
 }
+
+export default Component;

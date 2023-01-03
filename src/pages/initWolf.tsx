@@ -1,31 +1,18 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import ChoseList from '../components/ChoseList';
-import { CHARACTER_TYPE } from '../game/characters/type';
+import { Wolf } from '../game/characters';
 import { addRoleToPlayers } from '../game/reducer'
 import { selectNumberWolfCharacter, selectPlayerWithoutRole } from '../game/selectors';
 import { Player } from '../game/types';
 
-interface SelectedPlayer extends Player {
-  selected?: boolean;
-}
-
-interface ChosePlayerFunc {
-  (player: SelectedPlayer): void
-}
-interface PlayerProps {
-  player: SelectedPlayer;
-  chosePlayer: ChosePlayerFunc;
-}
-
-export default () => {
+const Component = () => {
   const dispatch = useDispatch()
   const [players] = useState<Player[]>(useSelector(selectPlayerWithoutRole));
-  console.log(players)
   const numberWolf = useSelector(selectNumberWolfCharacter);
-  const submit = () => {
-    dispatch(addRoleToPlayers(players
-      .map(p => ({ ...p, role: { name: CHARACTER_TYPE.WOLF}}))
+  const submit = (selectedPlayers: Player[]) => {
+    dispatch(addRoleToPlayers(selectedPlayers
+      .map(p => ({ ...p, role: Wolf.name }))
     ));
   }
   return (
@@ -39,3 +26,5 @@ export default () => {
     </div>
   )
 }
+
+export default Component;

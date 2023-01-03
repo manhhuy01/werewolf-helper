@@ -2,13 +2,13 @@ import React, { useState } from "react"
 import { Player } from "../game/types";
 
 interface Props {
-  items: Player [],
+  items: Player[],
   limit: number | undefined,
   submit: SubmitFunc,
 }
 
 interface SubmitFunc {
-  (selectedItems: Player[]) : void
+  (selectedItems: Player[]): void
 }
 
 interface SelectedPlayer extends Player {
@@ -27,21 +27,22 @@ interface PlayerProps {
 const PlayerCard = ({ data, chosePlayer }: PlayerProps) => {
   return (
     <div>
-      <span style={{background: data.selected ? 'gray': 'unset'}} onClick={() => chosePlayer(data)}>{data.name}</span>
+      <span style={{ background: data.selected ? 'gray' : 'unset' }} onClick={() => chosePlayer(data)}>{data.name}</span>
     </div>
   )
 }
 
-export default ({ items, limit = 1, submit }: Props) => {
-  const [stateItems, setItems] = useState<SelectedPlayer[]>(items.map(i=> ({...i, selected: false})))
+const ChoseList = ({ items, limit = 1, submit }: Props) => {
+  const [stateItems, setItems] = useState<SelectedPlayer[]>(items.map(i => ({ ...i, selected: false })))
   const chosePlayer = (player: SelectedPlayer) => {
-    if(stateItems.filter(item => item.selected).length < limit){
-      let foundPlayer = stateItems.find(p => p.name === player.name);
-      if (foundPlayer) {
+    let foundPlayer = stateItems.find(p => p.name === player.name);
+    if (foundPlayer) {
+      if(foundPlayer.selected || stateItems.filter(item => item.selected).length < limit){
         foundPlayer.selected = !foundPlayer.selected;
         setItems([...stateItems])
       }
     }
+
   }
 
   return (
@@ -52,3 +53,5 @@ export default ({ items, limit = 1, submit }: Props) => {
 
   )
 }
+
+export default ChoseList;
