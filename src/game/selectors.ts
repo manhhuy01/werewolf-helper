@@ -1,6 +1,8 @@
 import { createSelector } from '@reduxjs/toolkit'
 import scenes from './scenes'
 import { RootState } from '../store'
+import { CHARACTER_TYPE } from './characters/type';
+import { Player } from './types';
 
 export const selectCurrentScene = createSelector(
   (state: RootState) => state.game,
@@ -19,5 +21,11 @@ export const selectTotalPlayer = createSelector(
 
 export const selectPlayerWithoutRole = createSelector(
   (state: RootState) => state.game,
-  (game) => game.players.filter(player => !player.role)
+  (game) => game.players.filter((player:Player) => !player.role || player.role.name !== CHARACTER_TYPE.FARMER)
+)
+
+
+export const selectNumberWolfCharacter = createSelector(
+  (state: RootState) => state.game,
+  (game) => game.groupCharacters.find(g => g.character.name === CHARACTER_TYPE.WOLF)?.number
 )

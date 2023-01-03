@@ -1,8 +1,9 @@
-import React, { KeyboardEventHandler, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import ChoseList from '../components/ChoseList';
 import { CHARACTER_TYPE } from '../game/characters/type';
-import { addPlayers, addRoleToPlayers } from '../game/reducer'
-import { selectPlayerWithoutRole } from '../game/selectors';
+import { addRoleToPlayers } from '../game/reducer'
+import { selectNumberWolfCharacter, selectPlayerWithoutRole } from '../game/selectors';
 import { Player } from '../game/types';
 
 interface SelectedPlayer extends Player {
@@ -17,36 +18,24 @@ interface PlayerProps {
   chosePlayer: ChosePlayerFunc;
 }
 
-const PlayerCard = ({ player, chosePlayer }: PlayerProps) => {
-  return (
-    <div>
-      <span style={{background: player.selected ? 'gray': 'unset'}} onClick={() => chosePlayer(player)}>{player.name}</span>
-    </div>
-  )
-}
-
 export default () => {
   const dispatch = useDispatch()
-  const [players, setPlayers] = useState<SelectedPlayer[]>(useSelector(selectPlayerWithoutRole).map(player => ({...player, selected: false})))
+  const [players] = useState<Player[]>(useSelector(selectPlayerWithoutRole));
+  console.log(players)
+  const numberWolf = useSelector(selectNumberWolfCharacter);
   const submit = () => {
     dispatch(addRoleToPlayers(players
-      .filter(p => p.selected)
       .map(p => ({ ...p, role: { name: CHARACTER_TYPE.WOLF}}))
     ));
-  }
-  const chosePlayer = (player: SelectedPlayer) => {
-    let foundPlayer = players.find(p => p.name === player.name);
-    if(foundPlayer){
-      foundPlayer.selected = !foundPlayer.selected;
-      setPlayers([...players])
-    }
-
   }
   return (
     <div>
       <p>Ai là sói nào</p>
-      {players.map((player) => <PlayerCard key={player.name} player={player} chosePlayer={chosePlayer} />)}
-      <div><button onClick={submit}>Next step</button></div>
+      <ChoseList 
+        items={players}
+        limit={numberWolf}
+        submit={submit}
+      />
     </div>
   )
 }

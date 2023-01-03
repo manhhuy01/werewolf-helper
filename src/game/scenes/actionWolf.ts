@@ -1,8 +1,9 @@
+import { CHARACTER_TYPE } from "../characters/type";
 import { GameState, SCENE } from "../types";
 
 export default {
   startCondition: (game: GameState) => {
-    return game.players.length === 0;
+    return game.players.filter(p=> p.role?.name === CHARACTER_TYPE.WOLF).length === game.groupCharacters.find(g=> g.character.name === CHARACTER_TYPE.WOLF)?.number;
   },
   finishCondition: (game: GameState) => {
     return true;
