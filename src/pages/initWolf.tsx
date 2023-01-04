@@ -8,7 +8,7 @@ import { Player } from '../game/types';
 
 const Component = () => {
   const dispatch = useDispatch()
-  const [players] = useState<Player[]>(useSelector(selectPlayerWithoutRole));
+  const players = useSelector(selectPlayerWithoutRole);
   const numberWolf = useSelector(selectNumberWolfCharacter);
   const submit = (selectedPlayers: Player[]) => {
     dispatch(addRoleToPlayers(selectedPlayers

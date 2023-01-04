@@ -1,10 +1,11 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Player } from "../game/types";
 
 interface Props {
   items: Player[],
   limit: number | undefined,
   submit: SubmitFunc,
+  submitLabel?: string,
 }
 
 interface SubmitFunc {
@@ -32,7 +33,10 @@ const PlayerCard = ({ data, chosePlayer }: PlayerProps) => {
   )
 }
 
-const ChoseList = ({ items, limit = 1, submit }: Props) => {
+const ChoseList = ({ items, limit = 1, submit, submitLabel = 'Next step' }: Props) => {
+  useEffect(()=> {
+    setItems(items.map(i=>({...i, selected: false})))
+  }, [items])
   const [stateItems, setItems] = useState<SelectedPlayer[]>(items.map(i => ({ ...i, selected: false })))
   const chosePlayer = (player: SelectedPlayer) => {
     let foundPlayer = stateItems.find(p => p.name === player.name);
@@ -48,7 +52,7 @@ const ChoseList = ({ items, limit = 1, submit }: Props) => {
   return (
     <div>
       {stateItems.map((item, i) => <PlayerCard key={i} data={item} chosePlayer={chosePlayer} />)}
-      <div><button onClick={() => submit(stateItems.filter(item => item.selected) as Player[])}>Next step</button></div>
+      <div><button onClick={() => submit(stateItems.filter(item => item.selected) as Player[])}>{submitLabel}</button></div>
     </div>
 
   )

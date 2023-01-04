@@ -1,8 +1,8 @@
 import { createSlice, current } from '@reduxjs/toolkit'
 import { difference } from '../utils';
 import { SkillByRole, TransformByRole } from './characters';
-import { CHARACTER_TYPE, GroupCharacter, Skill } from './characters/type';
-import { Action, DefaultPlayer, EffectedPlayer, GameState, Player, ResultAfterNight, SESSION } from './types';
+import { CHARACTER_TYPE } from './characters/type';
+import { DefaultPlayer, EffectedPlayer, GameState, Player, ResultAfterNight, SESSION } from './types';
 
 
 const initialState: GameState = {
@@ -10,12 +10,13 @@ const initialState: GameState = {
   groupCharacters: [],
   actions: [],
   session: undefined,
-  resultsAfterNight: []
+  resultsAfterNight: [],
+  historyActions: [],
 }
 
 export const gameSlice = createSlice({
   name: 'game',
-  initialState,
+  initialState: { ...initialState },
   reducers: {
     addPlayers: (state, action) => {
       state.players = (action.payload as Player[]).map(player => ({ ...DefaultPlayer, ...player }));
@@ -54,29 +55,55 @@ export const gameSlice = createSlice({
       const resultAfterNight: ResultAfterNight = {
         deadPlayers: [],
       }
-      state.players.forEach(player => {
-
-        if (player.isAlive) {
-          const actionsToPlayer = state.actions.filter(action => action.target?.name === player.name);
+      const players = state.players.map(player => {
+        let newPlayer = { ...player };
+        if (newPlayer.isAlive) {
+          const actionsToPlayer = state.actions.filter(action => action.target?.name === newPlayer.name);
           if (actionsToPlayer.length) {
-            const effectedPlayer = actionsToPlayer.reduce((player, action) => {
+            const effectedPlayer = actionsToPlayer.reduce((_player, action) => {
               const executeSkillFunc = SkillByRole[action.source];
-              return executeSkillFunc ? executeSkillFunc(player) : (player as EffectedPlayer)
-            }, player) as EffectedPlayer;
+              return executeSkillFunc ? executeSkillFunc(_player) : (_player as EffectedPlayer)
+            }, newPlayer) as EffectedPlayer;
             if (effectedPlayer.role) {
               const transfromFunc = TransformByRole[effectedPlayer.role];
               if (transfromFunc) {
-                const newPlayer = transfromFunc(effectedPlayer);
-                player = newPlayer;
-                if (!player.isAlive) {
-                  resultAfterNight.deadPlayers.push(player);
-                }
+                newPlayer = transfromFunc(effectedPlayer);
               }
             }
           }
         }
+        return newPlayer;
       })
+
+      const deadPlayers = players.filter(player => !player.isAlive).map(player => player.name);
+      const alivePlayersBefore = state.players.filter(player => deadPlayers.includes(player.name) && player.isAlive);
+      resultAfterNight.deadPlayers = alivePlayersBefore;
+      state.players = players;
       state.resultsAfterNight.push(resultAfterNight);
+      state.historyActions.push({ actions: [...state.actions] })
+      state.actions = []
+      state.session = SESSION.Day;
+    },
+    hangedPlayer: (state, action) => {
+      let hangedPlayers = action.payload as Player[];
+      hangedPlayers.forEach(hangedPlayer => {
+        let player = state.players.find(p => p.name === hangedPlayer.name);
+        if (player) {
+          player.isAlive = false;
+        }
+      })
+
+    },
+    finishDay: (state) => {
+      state.session = undefined;
+    },
+    restart: (state) => {
+      state.players = [];
+      state.groupCharacters = [];
+      state.historyActions = [];
+      state.actions = [];
+      state.session = undefined;
+      state.resultsAfterNight = []
     }
   },
 })
@@ -88,6 +115,9 @@ export const { addPlayers,
   addAction,
   startNight,
   finishNight,
+  hangedPlayer,
+  finishDay,
+  restart,
 } = gameSlice.actions
 
 export default gameSlice.reducer

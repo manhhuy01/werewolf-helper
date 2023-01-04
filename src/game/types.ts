@@ -7,6 +7,7 @@ export enum SCENE {
   ActionWolf = 'actionWolf',
   Night = 'night',
   Day = 'day',
+  Finish = 'finish',
 }
 
 export enum SESSION {
@@ -36,6 +37,10 @@ export interface Action {
   skill: Skill
 }
 
+export interface HistoryAction {
+  actions: Action[]
+}
+
 export interface ResultAfterNight {
   deadPlayers: Player[],
 }
@@ -45,5 +50,6 @@ export interface GameState {
   groupCharacters: GroupCharacter[],
   actions: Action[],
   session: SESSION | undefined,
-  resultsAfterNight: ResultAfterNight[]
+  resultsAfterNight: ResultAfterNight[],
+  historyActions: HistoryAction[],
 }

@@ -9,6 +9,7 @@ import InitRole from './initRole';
 import Error from './error';
 import Night from './night';
 import Day from './day';
+import Finish from './finish';
 
 const components = {
   [SCENE.InitPlayer]: InitPlayer,
@@ -17,6 +18,7 @@ const components = {
   [SCENE.ActionWolf]: ActionWolf,
   [SCENE.Night]: Night,
   [SCENE.Day]: Day,
+  [SCENE.Finish]: Finish,
 }
 
 const Game = () => {
@@ -26,7 +28,6 @@ const Game = () => {
     return <Error />
   }
   const Component = components[scene.renderComponent]
-
   return (
     <div>
       <Component />
