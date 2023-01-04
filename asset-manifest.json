@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/werewolf-helper/static/css/main.1d744c34.css",
-    "main.js": "/werewolf-helper/static/js/main.85a67621.js",
+    "main.js": "/werewolf-helper/static/js/main.4bb935ef.js",
     "static/js/787.7ab8c1cc.chunk.js": "/werewolf-helper/static/js/787.7ab8c1cc.chunk.js",
     "index.html": "/werewolf-helper/index.html",
     "main.1d744c34.css.map": "/werewolf-helper/static/css/main.1d744c34.css.map",
-    "main.85a67621.js.map": "/werewolf-helper/static/js/main.85a67621.js.map",
+    "main.4bb935ef.js.map": "/werewolf-helper/static/js/main.4bb935ef.js.map",
     "787.7ab8c1cc.chunk.js.map": "/werewolf-helper/static/js/787.7ab8c1cc.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1d744c34.css",
-    "static/js/main.85a67621.js"
+    "static/js/main.4bb935ef.js"
   ]
 }
